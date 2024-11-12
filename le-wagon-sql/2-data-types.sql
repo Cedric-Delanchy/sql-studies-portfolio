@@ -8,7 +8,8 @@ SELECT
   DISTINCT MODEL_ID
 FROM `wagon-portfolio.course14.circle_stock`
 
--- Checking the schema of the circle_stock table, some columns are in a wrong type. I used the SAFE_CAST function to avoir an incorrect "-----" value in the price column
+/* Checking the schema of the circle_stock table, some columns are in a wrong type. 
+I used the SAFE_CAST function to avoir an incorrect "-----" value in the price column */
 
 SELECT MODEL_ID, MODEL_TYPE,MODEL_NAME,COLOR, 
   CAST(STOCK AS INT64) as stock,
