@@ -1,8 +1,6 @@
 /* Covers : WHERE, IF, CASE WHEN, SAFE_DIVIDE */
 
-
 -- after importing a customer table
-
 
 SELECT id,
   name,
