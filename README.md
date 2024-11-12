@@ -6,4 +6,4 @@ This repo shows some of the SQL excercises/courses I've done.
 
 **Description:**  Helped me to get into data transformation and advanced SQL queries
 
-**Content:** BigQuery, data types, aggregations, date & time, joins, subqueries, windows functions  
+**Content:** *BigQuery, data types, aggregations, date & time, joins, subqueries, windows functions* 
