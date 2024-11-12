@@ -1,6 +1,8 @@
-/* after importing a customers table
+/* Covers : WHERE, IF, CASE WHEN, SAFE_DIVIDE */
 
-Basit SELECT queries */
+
+-- after importing a customer table
+
 
 SELECT id,
   name,
@@ -48,5 +50,29 @@ SELECT id,
   IF (number_of_orders > 0,1,0) as is_customers
 FROM `course14.gwz_customers`
 
+-- Create a segment column based on the number of orders
+  
+SELECT id,
+  name,
+  surname,
+  number_of_orders,
+  CASE
+    WHEN number_of_orders = 0 THEN 'New'
+    WHEN number_of_orders IN (1,2) THEN 'Occasional'
+    WHEN number_of_orders >= 3 THEN 'Frequent'
+    ELSE NULL
+  END as segment
+FROM `course14.gwz_customers`
+ORDER BY id
 
+-- Add an average_basket column
 
+SELECT id,
+  name,
+  surname,
+  number_of_orders,
+  IF (number_of_orders > 0,1,0) as is_customers,
+  total_turnover,
+  SAFE_DIVIDE(total_turnover, number_of_orders) as average_basket
+FROM `wagon-portfolio.course14.gwz_customers`
+ORDER BY number_of_orders DESC
