@@ -17,5 +17,5 @@ SELECT MODEL_ID, MODEL_TYPE,MODEL_NAME,COLOR,
   CAST(DATE_CREATION AS DATE) AS date_creation,
   CAST(STOCK_DAYS AS FLOAT64) AS stock_days,
   SAFE_CAST(PRICE AS FLOAT64) AS price_formated,
-FROM `wagon-portfolio.course14.circle_stock_ok`
+FROM `course14.circle_stock_ok`
 
