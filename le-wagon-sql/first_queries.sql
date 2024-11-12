@@ -70,8 +70,8 @@ ORDER BY id
 SELECT id,
   name,
   surname,
-  number_of_orders,
   IF (number_of_orders > 0,1,0) as is_customers,
+  number_of_orders,
   total_turnover,
   SAFE_DIVIDE(total_turnover, number_of_orders) as average_basket
 FROM `wagon-portfolio.course14.gwz_customers`
