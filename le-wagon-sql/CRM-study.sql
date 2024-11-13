@@ -1,6 +1,7 @@
 -- I need to use a mail table to provide insights to a CRM team.
 
-/* Table has 6 columns and 136 rows:
+/* 
+Table has 6 columns and 136 rows:
 
 - journey_id: campaign ID
 - journey_name: campaign's name
