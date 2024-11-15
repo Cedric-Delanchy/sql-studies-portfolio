@@ -11,6 +11,7 @@ Table has 6 columns and 136 rows:
 - turnover
 
 Topics: CALCULATION, ROUND, SAFE DIVIDE, LIKE/NOT LIKE, WILDCARDS
+
 */
 
 -- First exploration shows a lot of null values. I start by identifying if the ID is the Primary Key
