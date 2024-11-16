@@ -1,4 +1,4 @@
--- I need to use a mail table to provide insights to a CRM team.
+-- I need to use a CRM data table to provide insights to a CRM team.
 
 /* 
 Table has 6 columns and 136 rows:
