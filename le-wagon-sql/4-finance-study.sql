@@ -12,6 +12,8 @@
   - shipping_fee
   - log_cost
   - ship_cost
+
+Diagram: https://github.com/Cedric-Delanchy/sql-studies-portfolio/blob/main/le-wagon-sql/4-finance-diagram.png
 */
 
 -- I start by identifying each primary keys
@@ -43,6 +45,7 @@ FROM `course16.gwz_sales`
 GROUP BY orders_id,
   products_id
 HAVING nb>=2
+
 
 
 
