@@ -1,4 +1,4 @@
-/* We are working on 3 different Finance tables.
+/* We are working on 3 different Finance tables. Goal is to understand the relationship between tables and create a diagram.
 
 - Products: contains the listing of product ids and purchase prices
 - Sales: order datas with:
@@ -13,7 +13,6 @@
   - log_cost
   - ship_cost
 
-Diagram: https://github.com/Cedric-Delanchy/sql-studies-portfolio/blob/main/le-wagon-sql/4-finance-diagram.png
 */
 
 -- I start by identifying each primary keys
@@ -47,7 +46,7 @@ GROUP BY orders_id,
 HAVING nb>=2
 
 
-
+-- Diagram: https://github.com/Cedric-Delanchy/sql-studies-portfolio/blob/main/le-wagon-sql/4-finance-diagram.png
 
 
 
