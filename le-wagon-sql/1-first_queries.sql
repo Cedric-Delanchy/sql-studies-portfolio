@@ -1,4 +1,4 @@
-/* Covers : WHERE, IF, CASE WHEN, SAFE_DIVIDE */
+/* QUERIES: WHERE, IF, CASE WHEN, SAFE_DIVIDE */
 
 -- after importing a customer table
 
