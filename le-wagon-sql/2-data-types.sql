@@ -1,4 +1,4 @@
-/* Covers: CAST, 
+/* QUERIES: CAST, 
 Provided table :  circle_stock_ok
 */
 
