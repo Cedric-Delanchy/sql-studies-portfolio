@@ -25,7 +25,7 @@ VALUES
   (4,"Samantha","Davis","2022-04-12",3,162.1),
   (5,"Paul","Belmond","2022-08-28",0,0.0)
 
--- Update some datas
+-- Update some datas for a specific customer
 
 UPDATE `course19.gwz_customers`
 SET 
@@ -60,7 +60,7 @@ VALUES
 (1753,"210826_nl_bb_b",11528,2139,271,0),
 (1755,"	210826_nl_dej",71566,15723,1131,0)
 
--- Add all values from an other table
+-- Add all values from another table
 
 INSERT INTO `wagon-portfolio.course19.gwz_mail`
   SELECT * FROM `course19.gwz_mail_batch1`
