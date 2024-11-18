@@ -1,7 +1,7 @@
 /* 
 Exploration, cleaning, enrichment and analysis of a NPS score.
 
-QUERIES: 
+QUERIES: COUNT, CASE WHEN, FILTERING, CALCULATION, EXTRACt, CAST, AVERAGE
 
 ---
 Table: gwz_nps - 9 columns - 6295 rows
