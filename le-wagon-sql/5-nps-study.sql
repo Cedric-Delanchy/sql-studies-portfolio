@@ -15,7 +15,6 @@ Schema:
 - orders_id: the orders_id associated with the review
 - transporter: the transporter associated with the order
 - sgt: the segment of the client associated with the order
-
 */
 
 -- Check the PK (orders_id). 
