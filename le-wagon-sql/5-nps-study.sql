@@ -96,23 +96,23 @@ SELECT
 -- Total June (1441)
   
 SELECT COUNT(*)
-FROM `wagon-portfolio.course14.gwz_nps_calculated`
+FROM `wcourse14.gwz_nps_calculated`
 WHERE global_note IS NOT null
-  and date_date BETWEEN "2021-06-01" AND "2021-06-30"
+  AND date_date BETWEEN "2021-06-01" AND "2021-06-30"
 
 -- Total promoters June (1061)
 
 ELECT COUNT(*)
-FROM `wagon-portfolio.course14.gwz_nps_calculated`
+FROM `course14.gwz_nps_calculated`
 WHERE nps = "1"
-  and date_date BETWEEN "2021-06-01" AND "2021-06-30"
+  AND date_date BETWEEN "2021-06-01" AND "2021-06-30"
 
 -- Total detractors June (96)
 
 SELECT COUNT(*)
-FROM `wagon-portfolio.course14.gwz_nps_calculated`
+FROM `course14.gwz_nps_calculated`
 WHERE nps = "-1"
-  and date_date BETWEEN "2021-06-01" AND "2021-06-30"
+  AND date_date BETWEEN "2021-06-01" AND "2021-06-30"
 
 -- NPS for June (67%)
 
@@ -121,26 +121,61 @@ SELECT ROUND((1061 -96) / 1441 * 100,1)
 -- Total global_note August (1269)
 
   SELECT COUNT(*)
-FROM `wagon-portfolio.course14.gwz_nps_calculated`
+FROM `wcourse14.gwz_nps_calculated`
 WHERE global_note IS NOT null
-  and date_date BETWEEN "2021-08-01" AND "2021-08-31"
+  AND date_date BETWEEN "2021-08-01" AND "2021-08-31"
 
 -- Total promoters August (902)
   
 SELECT COUNT(*)
-FROM `wagon-portfolio.course14.gwz_nps_calculated`
+FROM `course14.gwz_nps_calculated`
 WHERE nps = "1"
-  and date_date BETWEEN "2021-08-01" AND "2021-08-31"
+  AND date_date BETWEEN "2021-08-01" AND "2021-08-31"
 
 -- Total detractors August (104)
 
 SELECT COUNT(*)
-FROM `wagon-portfolio.course14.gwz_nps_calculated`
+FROM `course14.gwz_nps_calculated`
 WHERE nps = "-1"
-  and date_date BETWEEN "2021-08-01" AND "2021-08-31"
+  AND date_date BETWEEN "2021-08-01" AND "2021-08-31"
 
 -- NPS for August (62.9%)
 
 SELECT ROUND((902 - 104) / 1269 * 100,1)
 
--- We observe a 4 points decrease between June & August. 
+/* We observe a 4 points decrease in NPS between June & August. 
+We are being told that this decrease maybe caused by a carrier. 
+
+Going through the same process, filtering on the transporter I get respectively :
+
+- For June: 62.1% of NPS
+- For August: 35.1%
+
+Even though volumes are pretty low (87 notes for June & 57 for August) there is a decrease in NPS that we can investigate. */
+
+-- We can isolate customers either detractors or with a low score on delivery who used the faulty carrier and hand it over to the customer team to gather feedbacks
+
+SELECT DISTINCT *
+FROM `course14.gwz_nps_calculated`
+WHERE date_date BETWEEN "2021-08-01" AND "2021-08-31"
+  AND transporter = "Chrono Home"
+  AND (nps = "-1" OR csat_delivery <= 3) 
+ORDER BY sgt
+
+-- To provide more details, let's create a split per month and per segments of the average NPS
+
+SELECT sgt,
+  EXTRACT(month FROM date_date) AS month,
+  ROUND(AVG(CAST(nps AS int64))*100,1) as average_nps
+FROM `course14.gwz_nps_calculated`
+WHERE date_date BETWEEN "2021-06-01" AND "2021-08-31"
+GROUP by 1, 2 
+ORDER BY 1, 2
+
+
+
+
+
+
+
+
