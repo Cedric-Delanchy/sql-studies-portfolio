@@ -1,6 +1,6 @@
 /* Practice around some basic CRUD operations
 
-QUERY: 
+QUERY: CREATE, INSERT, UPDATE
 */
 
 -- Creation of a customer table
