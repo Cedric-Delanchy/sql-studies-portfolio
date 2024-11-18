@@ -58,7 +58,7 @@ WHERE journey_name = "COPY_OF_210721_nl_hh_midi"
 INSERT INTO `wagon-portfolio.course19.gwz_mail` (journey_id,journey_name,sent_nb,opening_nb,click_nb,turnover)
 VALUES
 (1753,"210826_nl_bb_b",11528,2139,271,0),
-(1755,"	210826_nl_dej",71566,15723,1131,0)
+(1755,"210826_nl_dej",71566,15723,1131,0)
 
 -- Add all values from other tables
 
