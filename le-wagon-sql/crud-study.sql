@@ -60,7 +60,7 @@ VALUES
 (1753,"210826_nl_bb_b",11528,2139,271,0),
 (1755,"	210826_nl_dej",71566,15723,1131,0)
 
--- Add all values from another table
+-- Add all values from other tables
 
 INSERT INTO `wagon-portfolio.course19.gwz_mail`
   SELECT * FROM `course19.gwz_mail_batch1`
