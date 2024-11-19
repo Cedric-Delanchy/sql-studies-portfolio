@@ -1,6 +1,6 @@
 /* Practice around some basic CRUD operations
 
-QUERY: CREATE, INSERT, UPDATE
+QUERY: CREATE, INSERT, UPDATE, DELETE, SET
 */
 
 -- Creation of a customer table
@@ -68,4 +68,33 @@ INSERT INTO `wagon-portfolio.course19.gwz_mail`
 INSERT INTO `wagon-portfolio.course19.gwz_mail`
   SELECT * FROM `course19.gwz_mail_batch2`
 
+-- The INSERT created duplications as the rows already existed but without the turnover.
 
+SELECT *
+FROM `course19.gwz_mail`
+WHERE journey_name LIKE "210826_nl_%" 
+  OR journey_name LIKE "210827_nl_%"
+  
+-- Delete the old entries without turnover
+
+DELETE
+FROM `course19.gwz_mail`
+WHERE turnover IS NULL
+  AND journey_name LIKE "210826_nl_%" 
+  OR journey_name LIKE "210827_nl_%"
+
+-- INSERT new campaign datas from 30/08/21 and 31/08/21 in the main table
+
+INSERT INTO `course19.gwz_mail`
+  SELECT * 
+  FROM `course19.gwz_mail_batch3`
+  WHERE journey_name LIKE "21083%"
+
+-- Batch update campaign through mapping
+
+UPDATE `course19.gwz_mail` AS mail
+SET mail.turnover = batch3.turnover
+FROM `course19.gwz_mail_batch3` AS batch3
+WHERE
+  mail.journey_id = batch3.journey_id
+  AND batch3.journey_name LIKE "21082%"
