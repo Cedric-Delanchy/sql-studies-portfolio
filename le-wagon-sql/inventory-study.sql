@@ -159,30 +159,43 @@ ORDER BY product_id
 
 ------------------------------------------------------------------------------------------
 
--- We will now use the circle_stock_kpi table to perform some analysis for the purchasing team
+/* We will now use the circle_stock_kpi table to perform some analysis for the purchasing team
 
-/*  Basic investigations by model_types and model_names
+Basic investigations by macro view, model_types and model_names
 
 Macro view:
 - Total nbr of products (468)
 - total pdts in stock (402),
 - shortage rate (14.1%)
-- total stock value (526 487€) 
+- total stock value (526 487 €) 
 - total stock (22 474)
 
 By model_type:
 
+| model_type  | total_stock_value | nb_products | nb_products_in_stock | shortage_rate | total_stock |
+|-------------|-------------------|-------------|----------------------|---------------|-------------|
+| Tshirt      | 206762.0          | 109         | 102                  | 6.422         | 7656        |
+| Short       | 101634.0          | 101         | 90                   | 10.891        | 4137        |
+| Crop-top    | 87386.0           | 88          | 67                   | 23.864        | 4291        |
+| Top         | 71158.0           | 94          | 78                   | 17.021        | 3564        |
+| Legging     | 58145.0           | 65          | 59                   | 9.231         | 2688        |
+| Accessories | 1402.0            | 11          | 6                    | 45.455        | 138         |
+
+For obvious reasons of readability and productivity I won't share the model_name view (36 lines), but only the query below.
 
 */
 
 SELECT model_type,
+  SUM(stock_value) AS total_stock_value,
   COUNT(product_id) AS nb_products,
   SUM(in_stock) AS nb_products_in_stock,
   ROUND(AVG(1 - in_stock)*100,3) AS shortage_rate,
-  SUM(stock_value) AS total_stock_value,
   SUM(stock) AS total_stock
 FROM `course15.circle_stock_kpi`
 GROUP BY model_type
+ORDER BY total_stock_value DESC
+
+
 
 
 
