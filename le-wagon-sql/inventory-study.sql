@@ -22,7 +22,7 @@ circle_sales
 - product_id - the unique identifier of the product. Corresponding to the concatenation of the model_id, the color and the size in stock table
 - qty - the quantity of product sold
 
-QUERY: 
+QUERY: CONCAT, HAVING, REGEXP_CONTAINS, ROUND, IF
 */
 
 -- Identifying the PK for our circle_sale table
@@ -123,7 +123,40 @@ WHERE TRUE
 
 SELECT *,
   CONCAT(model_name," ",color_name," ","Size ",IFNULL(size,"no-size")) AS product_name
-FROM `wagon-portfolio.course15.circle_stock` AS 
+FROM `course15.circle_stock` AS 
+
+-- New column model_type as categories based on Regex
+
+SELECT *,
+  CASE
+    WHEN REGEXP_CONTAINS(model_name,"(?i)(t|tee)[- ]?shirt") THEN "Tshirt"
+    WHEN REGEXP_CONTAINS(model_name,"(?i)(brass[iïî]?[eéèêë]re|crop[- ]?top)") THEN "Crop-top"
+    WHEN REGEXP_CONTAINS(model_name,"(?i)legg?i?n?s?") THEN "Legging"
+    WHEN REGEXP_CONTAINS(model_name,"(?i)shorts?") THEN "Short"
+    WHEN REGEXP_CONTAINS(model_name,"(?i)(d[eéèêë]bardeur|haut|tank)") THEN "Top"
+    ELSE "Accessories"
+  END AS model_type
+FROM `course15.circle_stock_name`
+
+-- Add product_id column (PK), in_stock and stock_value, and organize the final table
+
+SELECT CONCAT(s.model_id,"-",s.color,"-",IFNULL(s.size,"no-size")) AS product_id,
+  s.product_name,
+  s.model_id,
+  s.model_name,
+  s.model_type,
+  s.color,
+  s.color_name,
+  s.size,
+  s.new,
+  s.forecast_stock,
+  s.stock,
+  s.price,
+  IF(s.stock<=0,0,1) AS in_stock,
+  ROUND(s.stock*price,2) AS stock_value
+FROM `course15.circle_stock_cat` as s
+ORDER BY product_id
+
 
 
 
