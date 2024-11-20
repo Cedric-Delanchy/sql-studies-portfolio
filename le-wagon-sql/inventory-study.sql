@@ -181,18 +181,19 @@ By model_type:
 | Legging     | 58145.0           | 65          | 59                   | 9.231         | 2688        |
 | Accessories | 1402.0            | 11          | 6                    | 45.455        | 138         |
 
-For obvious reasons of readability and productivity I won't share the model_name view (36 lines), but only the query below.
+For obvious reasons of readability and productivity I won't share the model_name view (36 lines), but the query below.
 
 */
 
 SELECT model_type,
+  model_name,
   SUM(stock_value) AS total_stock_value,
   COUNT(product_id) AS nb_products,
   SUM(in_stock) AS nb_products_in_stock,
   ROUND(AVG(1 - in_stock)*100,3) AS shortage_rate,
   SUM(stock) AS total_stock
 FROM `course15.circle_stock_kpi`
-GROUP BY model_type
+GROUP BY model_type, model_name
 ORDER BY total_stock_value DESC
 
 
