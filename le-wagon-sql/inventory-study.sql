@@ -22,7 +22,7 @@ circle_sales
 - product_id - the unique identifier of the product. Corresponding to the concatenation of the model_id, the color and the size in stock table
 - qty - the quantity of product sold
 
-QUERY: CONCAT, HAVING, REGEXP_CONTAINS, ROUND, IF
+QUERY: CONCAT, HAVING, REGEXP_CONTAINS, ROUND, IF, AGGREGATIONS
 */
 
 -- Identifying the PK for our circle_sale table
@@ -119,13 +119,13 @@ WHERE TRUE
 
 -- Now I'll start enriching the stock table. For the sake of practising I will do it with intermediate tables instead of one single query
 
--- New colum product_name
+-- New colum product_name and creation of a table circle_stock_name
 
 SELECT *,
   CONCAT(model_name," ",color_name," ","Size ",IFNULL(size,"no-size")) AS product_name
 FROM `course15.circle_stock` AS 
 
--- New column model_type as categories based on Regex
+-- New column model_type as categories based on Regex and create a table stock_cat
 
 SELECT *,
   CASE
@@ -138,7 +138,7 @@ SELECT *,
   END AS model_type
 FROM `course15.circle_stock_name`
 
--- Add product_id column (PK), in_stock and stock_value, and organize the final table
+-- Add product_id column (PK), in_stock and stock_value, and organize the final table circle_stock_kpi
 
 SELECT CONCAT(s.model_id,"-",s.color,"-",IFNULL(s.size,"no-size")) AS product_id,
   s.product_name,
@@ -156,6 +156,34 @@ SELECT CONCAT(s.model_id,"-",s.color,"-",IFNULL(s.size,"no-size")) AS product_id
   ROUND(s.stock*price,2) AS stock_value
 FROM `course15.circle_stock_cat` as s
 ORDER BY product_id
+
+------------------------------------------------------------------------------------------
+
+-- We will now use the circle_stock_kpi table to perform some analysis for the purchasing team
+
+/*  Basic investigations by model_types and model_names
+
+Macro view:
+- Total nbr of products (468)
+- total pdts in stock (402),
+- shortage rate (14.1%)
+- total stock value (526 487€) 
+- total stock (22 474)
+
+By model_type:
+
+
+*/
+
+SELECT model_type,
+  COUNT(product_id) AS nb_products,
+  SUM(in_stock) AS nb_products_in_stock,
+  ROUND(AVG(1 - in_stock)*100,3) AS shortage_rate,
+  SUM(stock_value) AS total_stock_value,
+  SUM(stock) AS total_stock
+FROM `course15.circle_stock_kpi`
+GROUP BY model_type
+
 
 
 
