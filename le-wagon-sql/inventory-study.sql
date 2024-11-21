@@ -22,7 +22,7 @@ circle_sales
 - product_id - the unique identifier of the product. Corresponding to the concatenation of the model_id, the color and the size in stock table
 - qty - the quantity of product sold
 
-QUERY: CONCAT, HAVING, REGEXP_CONTAINS, ROUND, IF, AGGREGATIONS, UPDATE, DATE_SUB
+QUERY: CONCAT, HAVING, REGEXP_CONTAINS, ROUND, IF, AGGREGATIONS, UPDATE, DATE_SUB, ALTER
 */
 
 -- Identifying the PK for our circle_sale table
@@ -242,7 +242,36 @@ WHERE TRUE
   AND forecast_stock < 50
 ORDER BY product_id
 
--- 
+-- Add a column stock to the circle_sales_daily table and populate values from circle_stock_kpi_top
+
+ALTER TABLE `course15.circle_sales_daily`
+ADD COLUMN stock INT64
+
+UPDATE `course15.circle_sales_daily` d
+SET d.stock = t.stock
+FROM `course15.circle_stock_kpi_top` t
+WHERE d.product_id = t.product_id 
+
+/* calculate the nbr of days remaining before shortage for our 3 identified products
+
+| product_id             | stock | qty_91 | avg_daily_qty_91 | nb_days_remaining |
+|------------------------|-------|--------|------------------|-------------------|
+| TS001BTB-MAM01_U_BL_M  | 48    | 2959   | 32.5             | 1.5               |
+| TS001BTB-MAM01_U_WH_M  | 5     | 1703   | 18.7             | 0.3               |
+| TS001BTB-MAM01_U_WH_XS | 35    | 4166   | 45.8             | 0.8               |
+
+*/
+ 
+SELECT product_id,
+  stock,
+  qty_91,
+  avg_daily_qty_91,
+  ROUND((stock / avg_daily_qty_91),1) AS nb_days_remaining
+FROM `course15.circle_sales_daily`
+WHERE TRUE
+  AND product_id IN ("TS001BTB-MAM01_U_BL_M","TS001BTB-MAM01_U_WH_M","TS001BTB-MAM01_U_WH_XS")
+
+
 
 
 
