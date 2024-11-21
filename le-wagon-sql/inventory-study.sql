@@ -271,7 +271,3 @@ FROM `course15.circle_sales_daily`
 WHERE TRUE
   AND product_id IN ("TS001BTB-MAM01_U_BL_M","TS001BTB-MAM01_U_WH_M","TS001BTB-MAM01_U_WH_XS")
 
-
-
-
-
