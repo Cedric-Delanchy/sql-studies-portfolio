@@ -22,7 +22,7 @@ circle_sales
 - product_id - the unique identifier of the product. Corresponding to the concatenation of the model_id, the color and the size in stock table
 - qty - the quantity of product sold
 
-QUERY: CONCAT, HAVING, REGEXP_CONTAINS, ROUND, IF, AGGREGATIONS
+QUERY: CONCAT, HAVING, REGEXP_CONTAINS, ROUND, IF, AGGREGATIONS, UPDATE, DATE_SUB
 */
 
 -- Identifying the PK for our circle_sale table
@@ -140,7 +140,7 @@ FROM `course15.circle_stock_name`
 
 -- Add product_id column (PK), in_stock and stock_value, and organize the final table circle_stock_kpi
 
-SELECT CONCAT(s.model_id,"-",s.color,"-",IFNULL(s.size,"no-size")) AS product_id,
+SELECT CONCAT(s.model_id,"_",s.color,"_",IFNULL(s.size,"no-size")) AS product_id,
   s.product_name,
   s.model_id,
   s.model_name,
@@ -153,7 +153,7 @@ SELECT CONCAT(s.model_id,"-",s.color,"-",IFNULL(s.size,"no-size")) AS product_id
   s.stock,
   s.price,
   IF(s.stock<=0,0,1) AS in_stock,
-  ROUND(s.stock*price,2) AS stock_value
+  ROUND(s.stock*s.price,2) AS stock_value
 FROM `course15.circle_stock_cat` as s
 ORDER BY product_id
 
@@ -196,9 +196,53 @@ FROM `course15.circle_stock_kpi`
 GROUP BY model_type, model_name
 ORDER BY total_stock_value DESC
 
+-- Create a top 10 products table 
 
+SELECT product_id,
+  SUM(qty) AS qty
+FROM `course15.circle_sales`
+GROUP BY product_id
+ORDER BY qty DESC
+LIMIT 10
 
+-- Create a table circle_stock_kpi_top with a top_products column with value 1 mapping top_products table on product_id
 
+UPDATE `course15.circle_stock_kpi_top` t
+SET top_products = 1
+FROM `course15.top_products` s
+WHERE t.product_id = s.product_id
+
+-- Estimating daily sales over the last 91 days and create a circle_sales_daily table
+
+SELECT product_id,
+  SUM(qty) AS qty_91,
+  ROUND(SUM(qty)/91,1) AS avg_daily_qty_91
+FROM `course15.circle_sales`
+WHERE date_date >= DATE_SUB("2021-10-01",INTERVAL 91 DAY)
+GROUP BY product_id
+ORDER BY qty_91 DESC
+
+/*  identify top products with low inventory
+
+| product_id             | product_name                       | stock | forecast_stock |
+|------------------------|------------------------------------|-------|----------------|
+| TS001BTB-MAM01_U_BL_M  | T-shirt sport - MAAM Black Size M  | 48    | 48             |
+| TS001BTB-MAM01_U_WH_M  | T-shirt sport - MAAM White Size M  | 5     | 5              |
+| TS001BTB-MAM01_U_WH_XS | T-shirt sport - MAAM White Size XS | 35    | 35             |
+
+*/
+
+SELECT product_id,
+  product_name,
+  stock,
+  forecast_stock
+FROM `course15.circle_stock_kpi_top`
+WHERE TRUE
+  AND top_products = 1
+  AND forecast_stock < 50
+ORDER BY product_id
+
+-- 
 
 
 
