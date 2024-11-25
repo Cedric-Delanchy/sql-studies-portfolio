@@ -19,3 +19,21 @@ SELECT MODEL_ID, MODEL_TYPE,MODEL_NAME,COLOR,
   SAFE_CAST(PRICE AS FLOAT64) AS price_formated,
 FROM `course14.circle_stock_ok`
 
+-- Create a Status column based on the date values
+
+SELECT parcel_id,
+  parcel_tracking,
+  transporter,
+  priority,
+  date_purchase,
+  date_shipping,
+  date_delivery,
+  date_cancelled,
+  CASE
+    WHEN date_cancelled IS NOT NULL THEN "Cancelled"
+    WHEN date_shipping IS NULL THEN "In progress"
+    WHEN date_delivery IS NULL THEN "In transit"
+    WHEN date_delivery IS NOT NULL THEN "Delivered"
+    ELSE NULL
+  END AS status
+FROM `course15.cc_parcel`
