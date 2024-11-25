@@ -6,21 +6,21 @@
 
 circle_stock
 -------------
-- model_id - the unique identifier of the model
-- color - the product color acronym
-- size - the size of the product (XS, S, M, L, XL, XXL)
-- model_name - the name of the model corresponding to the model_id
-- color_name - the name of the color corresponding to the color acronym
-- new - if the product has been recently added to the catalog. It might have been recently added to the catalog without having been stocked yet.
-- price - the price of the product in €
-- stock - the quantity of products available in the warehouse
-- forecast_stock - the quantity of products available in the warehouse + the quantity already ordered by the production team which will be delivered to the warehouse soon
+- model_id: the unique identifier of the model
+- color: the product color acronym
+- size: the size of the product (XS, S, M, L, XL, XXL)
+- model_name: the name of the model corresponding to the model_id
+- color_name: the name of the color corresponding to the color acronym
+- new: if the product has been recently added to the catalog. It might have been recently added to the catalog without having been stocked yet.
+- price: the price of the product in €
+- stock: the quantity of products available in the warehouse
+- forecast_stock: the quantity of products available in the warehouse + the quantity already ordered by the production team which will be delivered to the warehouse soon
 
 circle_sales
 -------------
-- date_date - the date of the sales
-- product_id - the unique identifier of the product. Corresponding to the concatenation of the model_id, the color and the size in stock table
-- qty - the quantity of product sold
+- date_date: the date of the sales
+- product_id: the unique identifier of the product. Corresponding to the concatenation of the model_id, the color and the size in stock table
+- qty: the quantity of product sold
 
 QUERY: CONCAT, HAVING, REGEXP_CONTAINS, ROUND, IF, AGGREGATIONS, UPDATE, DATE_SUB, ALTER
 */
