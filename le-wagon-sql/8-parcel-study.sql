@@ -18,7 +18,7 @@ cc_parcel_product:
 - model_name: the name of the product model in the parcel
 - qty: the quantity of the specific product model in a given parcel
 
-QUERY: 
+QUERY: Aggregation, Date
 */
 
 -- Identify PK cc_parcel
