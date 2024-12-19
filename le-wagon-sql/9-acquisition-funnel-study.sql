@@ -13,7 +13,7 @@ cc_funnel:
 - date_lost: the date the prospect was lost - not interested or no response to the follow-up/revival email
 - priority: the level of importance of the prospect in relation to the size and commercial potential of the company
 
-QUERY: COUNTIF()
+QUERY: COUNTIF(), Aggregations, Date_Diff
 */
 
 -- PK
