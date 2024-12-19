@@ -108,7 +108,73 @@ WHERE deal_stage IS NOT NULL
 GROUP BY deal_stage, priority
 ORDER BY deal_stage
 
--- Let's proceed to calculate some conversion rates
+-- Let's proceed to calculate some conversion rates and lead times
+
+| nb_conversion | lead2customer_cr | avg_lead2customer_time | lead2opportunity_cr | avg_lead2opportunity_time | opportunity2customer_cr | avg_lead2customer_time_1 |
+|---------------|------------------|------------------------|---------------------|---------------------------|-------------------------|--------------------------|
+| 23            | 12.23            | 19.0                   | 40.96               | 12.0                      | 12.23                   | 8.0                      |
+
+SELECT 
+  SUM(lead_to_customer) AS nb_conversion,
+  ROUND(AVG(lead_to_customer)*100,2) AS lead2customer_cr,
+  ROUND(AVG(time_to_customer)) AS avg_lead2customer_time,
+  ROUND(AVG(lead_to_opportunity)*100,2) AS lead2opportunity_cr,
+  ROUND(AVG(time_to_opportunity)) AS avg_lead2opportunity_time,
+  ROUND(AVG(lead_opportunity_to_customer)*100,2) AS opportunity2customer_cr,
+  ROUND(AVG(time_opportunity_to_customer)) AS avg_lead2customer_time
+FROM `course15.cc_funnel_kpi`
+
+-- By Priority
+
+| priority | nb_conversion | lead2customer_cr | avg_lead2customer_time | lead2opportunity_cr | avg_lead2opportunity_time | opportunity2customer_cr | avg_lead2customer_time_1 |
+|----------|---------------|------------------|------------------------|---------------------|---------------------------|-------------------------|--------------------------|
+| High     | 15            | 16.48            | 21.0                   | 49.45               | 12.0                      | 16.48                   | 8.0                      |
+| Low      | 3             | 6.38             | 10.0                   | 31.91               | 13.0                      | 6.38                    | 5.0                      |
+| Medium   | 5             | 10.0             | 17.0                   | 34.0                | 11.0                      | 10.0                    | 9.0                      |
+
+SELECT priority,
+  SUM(lead_to_customer) AS nb_conversion,
+  ROUND(AVG(lead_to_customer)*100,2) AS lead2customer_cr,
+  ROUND(AVG(time_to_customer)) AS avg_lead2customer_time,
+  ROUND(AVG(lead_to_opportunity)*100,2) AS lead2opportunity_cr,
+  ROUND(AVG(time_to_opportunity)) AS avg_lead2opportunity_time,
+  ROUND(AVG(lead_opportunity_to_customer)*100,2) AS opportunity2customer_cr,
+  ROUND(AVG(time_opportunity_to_customer)) AS avg_lead2customer_time
+FROM `course15.cc_funnel_kpi`
+GROUP BY priority
+ORDER BY priority
+
+-- By Month and priority
+
+| month_lead | priority | nb_conversion | lead2customer_cr | avg_lead2customer_time | lead2opportunity_cr | avg_lead2opportunity_time | opportunity2customer_cr | avg_lead2customer_time_1 |
+|------------|----------|---------------|------------------|------------------------|---------------------|---------------------------|-------------------------|--------------------------|
+| 5          | High     | 3             | 25.0             | 16.0                   | 83.33               | 13.0                      | 25.0                    | 9.0                      |
+| 5          | Low      | 0             | 0.0              |                        | 0.0                 |                           | 0.0                     |                          |
+| 5          | Medium   | 0             | 0.0              |                        | 50.0                | 0.0                       | 0.0                     |                          |
+| 6          | High     | 3             | 20.0             | 19.0                   | 80.0                | 11.0                      | 20.0                    | 7.0                      |
+| 6          | Low      | 1             | 33.33            | 14.0                   | 33.33               | 9.0                       | 33.33                   | 5.0                      |
+| 6          | Medium   | 0             | 0.0              |                        | 50.0                | 14.0                      | 0.0                     |                          |
+| 7          | High     | 5             | 15.15            | 25.0                   | 30.3                | 12.0                      | 15.15                   | 9.0                      |
+| 7          | Low      | 2             | 10.0             | 9.0                    | 25.0                | 10.0                      | 10.0                    | 5.0                      |
+| 7          | Medium   | 2             | 8.0              | 11.0                   | 24.0                | 10.0                      | 8.0                     | 6.0                      |
+| 8          | High     | 4             | 12.9             | 22.0                   | 41.94               | 14.0                      | 12.9                    | 8.0                      |
+| 8          | Low      | 0             | 0.0              |                        | 39.13               | 15.0                      | 0.0                     |                          |
+| 8          | Medium   | 3             | 15.79            | 22.0                   | 42.11               | 13.0                      | 15.79                   | 11.0                     |
+  
+SELECT
+  EXTRACT(MONTH FROM date_lead) AS month_lead,
+  priority,
+  SUM(lead_to_customer) AS nb_conversion,
+  ROUND(AVG(lead_to_customer)*100,2) AS lead2customer_cr,
+  ROUND(AVG(time_to_customer)) AS avg_lead2customer_time,
+  ROUND(AVG(lead_to_opportunity)*100,2) AS lead2opportunity_cr,
+  ROUND(AVG(time_to_opportunity)) AS avg_lead2opportunity_time,
+  ROUND(AVG(lead_opportunity_to_customer)*100,2) AS opportunity2customer_cr,
+  ROUND(AVG(time_opportunity_to_customer)) AS avg_lead2customer_time
+FROM `course15.cc_funnel_kpi`
+GROUP BY month_lead,priority
+ORDER BY month_lead,priority
+
 
 
 
