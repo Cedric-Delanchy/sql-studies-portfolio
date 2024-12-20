@@ -1,5 +1,5 @@
 /*
-Objectives: Practice JOINS
+Objectives: Practice JOINS and create a financial tracker
 
 3 tables : Product, Sales, Ship
 
@@ -19,3 +19,20 @@ Primary key - orders_id
 Foreign_key - orders_id in gwz_sales
 
 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
