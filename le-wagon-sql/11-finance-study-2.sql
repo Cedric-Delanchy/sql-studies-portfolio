@@ -22,20 +22,23 @@ QUERY : Joins, Aggregations
 
 */
 
--- Join Sales & Product tables and create a gwz_sales_margin table
+-- Join Sales & Product tables and create a gwz_sales_margin table. Add a purchase_cost and margin columns.
 
-SELECT date_date,
-  ### PK ###
+SELECT
+  s.date_date,
+  ### Key ###
   s.orders_id,
-  p.products_id,
-  ##########
-  s.turnover,
+  s.products_id,
+  ###########
   s.qty,
-  p.purchase_price
-FROM `course16.gwz_sales` as s
-LEFT JOIN `course16.gwz_product` as p
+  s.turnover,
+  p.purchase_price,
+  ROUND(s.qty*p.purchase_price,2) AS purchase_cost,
+  ROUND(s.turnover - (s.qty*p.purchase_price),2) AS margin
+FROM `course16.gwz_sales` AS s
+LEFT JOIN `course16.gwz_product` AS p 
   ON s.products_id = p.products_id
-
+  
 -- Test the PK of the gwz_sales_margin table
 
 SELECT orders_id,
@@ -46,18 +49,60 @@ GROUP BY orders_id, products_id
 HAVING nb >= 2
 ORDER BY nb DESC
 
--- Update gwz_sales_margin with a purchase_cost and margin columns
+-- Create a gwz_orders table aggregating gwz_sales_margin values
 
 SELECT date_date,
   orders_id,
-  products_id,
-  turnover,
-  qty,
-  purchase_price,
-  ROUND(qty * purchase_price,2) AS purchase_cost,
-  ROUND(turnover - (qty * purchase_price),2) AS margin
+  SUM(qty) AS qty,
+  ROUND(SUM(turnover),2) AS turnover,
+  ROUND(SUM(purchase_cost),2) AS purchase_cost,
+  SUM(margin) AS margin
 FROM `course16.gwz_sales_margin`
-ORDER BY date_date;
+GROUP BY date_date, orders_id
+ORDER BY date_date
+
+-- Create a gwz_orders_operational table joining gwz_orders and gwz_sales
+
+SELECT o.date_date,
+  ### PK ###
+  o.orders_id,
+  ##########
+  o.qty,
+  o.turnover,
+  o.purchase_cost,
+  o.margin,
+  s.shipping_fee,
+  s.log_cost,
+  s.ship_cost,
+FROM `course16.gwz_orders` AS o
+LEFT JOIN `course16.gwz_ship` AS s
+  ON o.orders_id = s.orders_id
+ORDER BY date_date
+
+-- Add operational_margin column
+
+SELECT *,
+  ROUND(margin + shipping_fee - (log_cost + ship_cost),2) AS operational_margin
+FROM `course16.gwz_orders_operational`
+ORDER BY date_date
+
+-- Create a financial table gwz_finance_day aggregating gwz_orders_operational values per day
+
+SELECT date_date,
+  COUNT(orders_id) AS nb_transactions,
+  ROUND(AVG(turnover),2) AS avg_turnover,
+  ROUND(SUM(qty),2) AS qty,
+  ROUND(SUM(turnover),2) AS turnover,
+  ROUND(SUM (purchase_cost),2) AS purchase_cost,
+  ROUND(SUM (margin),2) AS margin,
+  ROUND(SUM (shipping_fee),2) AS shipping_fee,
+  ROUND(SUM (log_cost),2) AS log_cost,
+  ROUND(SUM (ship_cost),2) AS ship_cost,
+  ROUND(SUM (operational_margin),2) AS operational_margin
+FROM `course16.gwz_orders_operational`
+GROUP BY date_date
+ORDER BY date_date
+
 
 
 
