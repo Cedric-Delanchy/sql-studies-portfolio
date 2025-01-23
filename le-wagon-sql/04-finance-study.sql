@@ -48,8 +48,9 @@ HAVING nb>=2
 
 -- Diagram: https://github.com/Cedric-Delanchy/sql-studies-portfolio/blob/main/le-wagon-sql/4-finance-diagram.png
 
-
-
+--------------------------------
+-- PART 2
+--------------------------------
 
 
 
